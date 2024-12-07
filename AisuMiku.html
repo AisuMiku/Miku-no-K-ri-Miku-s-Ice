@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miku no Kōri (ミクの氷)</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: #d0f4f7;
+            transition: background-color 0.5s, color 0.5s;
+            animation: fadeIn 1s ease-in-out;
+        }
+        body.dark-mode {
+            background-color: #2c2c54;
+            color: #d0f4f7;
+        }
+        header {
+            background: linear-gradient(to right, #79c2d0, #a1e3f8);
+            text-align: center;
+            color: white;
+            padding: 50px 20px;
+            position: relative;
+            animation: slideInDown 1s ease-in-out;
+        }
+        header h1 {
+            font-size: 3rem;
+            margin: 0;
+            animation: bounceIn 2s ease-in-out;
+        }
+        header p {
+            margin-top: 10px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #dff6f8;
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1.2s ease-in-out;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            position: relative;
+            animation: slideInUp 1s ease-in-out;
+        }
+        nav a:hover {
+            color: #007a91;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .section {
+            margin-bottom: 40px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        .section h2 {
+            position: relative;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .section h2::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 4px;
+            background: #007a91;
+            bottom: -10px;
+            left: 0;
+        }
+        .section button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            font-size: 1rem;
+            color: white;
+            background: #007a91;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .section button:hover {
+            background: #005f6a;
+        }
+        footer {
+            background: linear-gradient(to right, #79c2d0, #a1e3f8);
+            text-align: center;
+            color: white;
+            padding: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            z-index: 2000;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .popup button {
+            margin-top: 10px;
+            background: #e74c3c;
+        }
+        #snowCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            animation: snowFall 10s infinite linear;
+        }
+        #toggleMode {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            background: #79c2d0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            animation: bounceIn 2s ease-in-out;
+        }
+
+        /* Style for the "Poto" section */
+        .poto-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .poto-section img {
+            width: 100%;
+            height: auto;
+            max-width: 300px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .poto-section img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        @keyframes slideInUp {
+            0% {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        @keyframes slideInDown {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        @keyframes snowFall {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Miku no Kōri (ミクの氷)</h1>
+        <p>Selamat datang di dunia Miku! Tempat kreativitas, belajar, dan cerita bersatu.</p>
+    </header>
+    <nav>
+        <a href="#belajar">Belajar</a>
+        <a href="#cerita">Cerita</a>
+        <a href="#gacha">Gacha</a>
+        <a href="#poto">Poto</a> <!-- Added "Poto" link -->
+        <a href="#tentang">Tentang</a>
+    </nav>
+    <button id="toggleMode">Mode Malam</button>
+    <canvas id="snowCanvas"></canvas>
+    <div class="container">
+        <div id="belajar" class="section">
+            <h2>Belajar Bahasa Inggris</h2>
+            <p>Berbagi tips dan trik belajar bahasa Inggris dengan gaya santai dan menyenangkan!</p>
+            <button onclick="showPopup('Tips belajar bahasa Inggris dengan Miku!')">Info Selengkapnya</button>
+        </div>
+        <div id="cerita" class="section">
+            <h2>Koleksi Cerita</h2>
+            <p>Cerita-cerita seru yang dibuat oleh Miku dengan imajinasi yang tak terbatas.</p>
+        </div>
+        <div id="gacha" class="section">
+            <h2>Konten Gacha</h2>
+            <p>Jelajahi dunia Gacha Life dan Gacha Club yang kreatif dan penuh warna!</p>
+        </div>
+        <div id="poto" class="section">
+            <h2>Galeri Foto</h2>
+            <div class="poto-section">
+                <!-- Add images here -->
+                <img src="https://via.placeholder.com/300x200" alt="Gacha Image 1">
+                <img src="https://via.placeholder.com/300x200" alt="Gacha Image 2">
+                <img src="https://via.placeholder.com/300x200" alt="Gacha Image 3">
+            </div>
+        </div>
+        <div id="tentang" class="section">
+            <h2>Tentang Miku</h2>
+            <p>Miku adalah kreator muda yang suka belajar, membuat cerita, dan berbagi inspirasi.</p>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Miku no Kōri</
+    </footer>
+
+    <!-- Pop-up -->
+    <div id="popup" class="popup">
+        <p id="popupMessage"></p>
+        <button onclick="hidePopup()">Tutup</button>
+    </div>
+
+    <script>
+        // Animasi salju
+        const canvas = document.getElementById('snowCanvas');
+        const ctx = canvas.getContext('2d');
+        const snowflakes = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function createSnowflake() {
+            return {
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 3 + 1,
+                speed: Math.random() * 1 + 0.5
+            };
+        }
+
+        function drawSnowflake(snowflake) {
+            ctx.beginPath();
+            ctx.arc(snowflake.x, snowflake.y, snowflake.radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+        }
+
+        function updateSnowflakes() {
+            snowflakes.forEach(snowflake => {
+                snowflake.y += snowflake.speed;
+                if (snowflake.y > canvas.height) {
+                    snowflake.y = 0;
+                }
+            });
+        }
+
+        function loop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            snowflakes.forEach(drawSnowflake);
+            updateSnowflakes();
+            requestAnimationFrame(loop);
+        }
+
+        function initSnowflakes() {
+            for (let i = 0; i < 100; i++) {
+                snowflakes.push(createSnowflake());
+            }
+        }
+
+        // Pop-up
+        function showPopup(message) {
+            document.getElementById('popupMessage').textContent = message;
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function hidePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        // Mode Malam
+        document.getElementById('toggleMode').addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('toggleMode').textContent =
+                document.body.classList.contains('dark-mode') ? 'Mode Siang' : 'Mode Malam';
+        });
+
+        // Inisialisasi
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        initSnowflakes();
+        loop();
+    </script>
+</body>
+</html>
